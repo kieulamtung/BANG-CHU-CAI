@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Học bảng chữ cái tiếng Nhật</title>
+<style>
+:root{--red:#c9252b;--ink:#171717;--muted:#666;--line:#e7e7e7}
+*{box-sizing:border-box}body{margin:0;background:#f6f6f6;color:var(--ink);font-family:Arial,"Yu Gothic","Meiryo","Noto Sans JP",sans-serif}
+header{background:var(--red);color:#fff;text-align:center;padding:24px 14px}header h1{margin:0 0 7px;font-size:clamp(23px,4vw,30px)}header p{margin:0}
+main{width:min(780px,calc(100% - 24px));margin:24px auto 40px}.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 5px 22px #00000008}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid #bbb;background:#fff;color:#111!important;-webkit-text-fill-color:#111;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}.tab.active{background:var(--red);border-color:var(--red);color:white}
+.settings{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}label{font-size:14px;color:#222!important}select, select:focus{display:block;margin-top:5px;padding:10px;border:1px solid #999;border-radius:9px;background-color:#fff!important;color:#111!important;font-size:14px;opacity:1;-webkit-text-fill-color:#111}select option{background-color:#fff!important;color:#111!important}
+.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:14px}.progress{height:8px;background:#eee;border-radius:20px;overflow:hidden;margin:12px 0 20px}.bar{height:100%;background:var(--red);width:0}
+.center{text-align:center}.prompt{font-size:15px;color:var(--muted)}.big{font-family:"Noto Sans JP","Yu Gothic","Meiryo",sans-serif;font-size:clamp(76px,17vw,120px);line-height:1.5;margin:8px 0 14px;color:#111;min-height:140px}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.answer{color:#111!important;background-color:#fff!important;-webkit-text-fill-color:#111;font-family:"Noto Sans JP","Yu Gothic","Meiryo",Arial,sans-serif;border:2px solid #d5d5d5;background:#fff;color:#111;border-radius:12px;padding:15px 8px;font-size:22px;font-weight:700;cursor:pointer;min-height:58px}.answer:hover:not(:disabled){border-color:var(--red);background:#fff8f8}.answer:disabled{opacity:1;color:#111!important;-webkit-text-fill-color:#111}.answer.correct{color:#176b37!important;-webkit-text-fill-color:#176b37}.answer.wrong{color:#a31313!important;-webkit-text-fill-color:#a31313}.answer.correct{background:#e9f7ee!important;border-color:#25864b!important;color:#176b37!important}.answer.wrong{background:#fff0f0!important;border-color:#c9252b!important;color:#a31313!important}
+.feedback{min-height:28px;text-align:center;margin:14px 0 4px;font-weight:700}.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.primary,.secondary{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}.primary{background:var(--red);color:white}.secondary{background:#eee;color:#222}.primary:disabled{opacity:.45;cursor:not-allowed}
+.hidden{display:none!important}.result{text-align:center}.score{font-size:48px;color:var(--red);font-weight:800;margin:12px}.note{color:var(--muted);font-size:13px;text-align:center;margin:16px 0 0}.meaning{font-size:18px;color:#444;margin:4px 0 12px}
+.homeChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:24px auto;max-width:560px}.choice{border:2px solid #ddd;border-radius:16px;background:#fff;color:#171717;padding:20px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px}.choice:hover{border-color:var(--red);background:#fff8f8}.choiceKana{font-family:"Noto Sans JP","Yu Gothic","Meiryo",sans-serif;font-size:64px;line-height:1.3}.choice strong{font-size:20px}.choice small{font-size:13px;color:#555}.homeChoices button{ -webkit-text-fill-color:#171717 }
+@media(max-width:480px){.homeChoices{gap:8px}.choice{padding:14px 6px}.choiceKana{font-size:52px}.choice strong{font-size:17px}.panel{padding:14px}.answer{font-size:20px;padding:13px 5px}.settings{gap:8px}.settings label{flex:1;min-width:135px}}
+</style>
+</head>
+<body>
+<header><h1 id="pageTitle">Học bảng chữ cái tiếng Nhật</h1><p id="pageSubtitle">Chọn bảng chữ cái bạn muốn học</p></header>
+<main><div class="panel">
+<section id="home" class="center">
+<h2>Chọn bảng chữ cái</h2>
+<p class="prompt">Bạn muốn luyện tập phần nào hôm nay?</p>
+<div class="homeChoices">
+<button class="choice" data-script="hira"><span class="choiceKana">あ</span><strong>Hiragana</strong><small>Bảng chữ mềm cơ bản</small></button>
+<button class="choice" data-script="kata"><span class="choiceKana">ア</span><strong>Katakana</strong><small>Bảng chữ thường dùng cho từ ngoại lai</small></button>
+</div>
+</section>
+<section id="learning" class="hidden">
+<div class="tabs">
+<button class="tab active" data-tab="quiz">Trắc nghiệm</button>
+<button class="tab" data-tab="read">Nhìn chữ và đọc</button>
+<button class="tab" data-tab="words">Từ ghép đơn giản</button>
+</div>
+
+<section id="quiz">
+<div class="settings">
+<label>Phạm vi<select id="scope"><option value="all">Tất cả Hiragana</option><option value="vowels">Hàng nguyên âm あ行</option><option value="k">Hàng K か行</option><option value="s">Hàng S さ行</option><option value="t">Hàng T た行</option><option value="n">Hàng N な行</option><option value="h">Hàng H は行</option><option value="m">Hàng M ま行</option><option value="y">Hàng Y や行</option><option value="r">Hàng R ら行</option><option value="w">Hàng W và ん</option></select></label>
+<label>Kiểu kiểm tra<select id="mode"><option value="kana">Nhìn chữ Nhật → chọn cách đọc</option><option value="romaji">Nhìn Romaji → chọn chữ Nhật</option></select></label>
+</div>
+<div class="stats"><span id="counter"></span><span id="scoreText"></span></div><div class="progress"><div class="bar" id="bar"></div></div>
+<div class="center"><div class="prompt" id="quizPrompt">Chữ này đọc là gì?</div><div class="big" id="quizQuestion">あ</div></div>
+<div class="answers" id="answers"></div><div class="feedback" id="quizFeedback"></div>
+<div class="actions"><button class="primary" id="next" disabled>Câu tiếp theo</button></div>
+<div class="result hidden" id="quizResult"><h2>Hoàn thành!</h2><div class="score" id="finalScore"></div><p id="resultMessage"></p><button class="primary" id="retry">Làm lại</button></div>
+</section>
+
+<section id="read" class="hidden">
+<div class="center"><div class="prompt">Chữ ngẫu nhiên xuất hiện. Hãy tự đọc thành tiếng, sau đó bấm “Nghe mẫu” để đối chiếu.</div><div class="big" id="readKana">き</div><div class="meaning" id="readIndex"></div>
+<div class="actions"><button class="primary" id="speak">Nghe mẫu</button><button class="secondary" id="showReading">Hiện Romaji</button><button class="secondary" id="newRead">Chữ khác</button></div>
+<div class="feedback" id="readAnswer"></div></div>
+<p class="note">Tính năng nghe mẫu dùng giọng đọc tiếng Nhật có sẵn trên trình duyệt. Nếu máy chưa có giọng Nhật, âm thanh có thể không phát.</p>
+</section>
+
+<section id="words" class="hidden">
+<div class="settings"><label>Chế độ<select id="wordMode"><option value="reading">Nhìn từ Hiragana → chọn cách đọc</option><option value="meaning">Nhìn từ Hiragana → chọn nghĩa tiếng Việt</option></select></label></div>
+<div class="stats"><span id="wordCounter"></span><span id="wordScore"></span></div><div class="progress"><div class="bar" id="wordBar"></div></div>
+<div class="center"><div class="prompt" id="wordPrompt">Từ này đọc như thế nào?</div><div class="big" id="wordKana">ねこ</div><div class="meaning" id="wordHint"></div></div>
+<div class="answers" id="wordAnswers"></div><div class="feedback" id="wordFeedback"></div>
+<div class="actions"><button class="primary" id="wordNext" disabled>Câu tiếp theo</button></div>
+<div class="result hidden" id="wordResult"><h2>Hoàn thành phần từ vựng!</h2><div class="score" id="wordFinal"></div><p id="wordMessage"></p><button class="primary" id="wordRetry">Làm lại</button></div>
+<p class="note">Các từ đều viết bằng Hiragana cơ bản. Nghĩa tiếng Việt được hiển thị sau khi chọn đáp án.</p>
+</section>
+<div class="actions"><button class="secondary" id="homeButton">← Trang chủ / Chọn bảng chữ khác</button></div>
+</section>
+</div></main>
+<script>
+
+const katakanaRows={
+vowels:[['ア','a'],['イ','i'],['ウ','u'],['エ','e'],['オ','o']],
+k:[['カ','ka'],['キ','ki'],['ク','ku'],['ケ','ke'],['コ','ko']],
+s:[['サ','sa'],['シ','shi'],['ス','su'],['セ','se'],['ソ','so']],
+t:[['タ','ta'],['チ','chi'],['ツ','tsu'],['テ','te'],['ト','to']],
+n:[['ナ','na'],['ニ','ni'],['ヌ','nu'],['ネ','ne'],['ノ','no']],
+h:[['ハ','ha'],['ヒ','hi'],['フ','fu'],['ヘ','he'],['ホ','ho']],
+m:[['マ','ma'],['ミ','mi'],['ム','mu'],['メ','me'],['モ','mo']],
+y:[['ヤ','ya'],['ユ','yu'],['ヨ','yo']],
+r:[['ラ','ra'],['リ','ri'],['ル','ru'],['レ','re'],['ロ','ro']],
+w:[['ワ','wa'],['ヲ','wo'],['ン','n']]};
+const katakanaWords=[
+['コーヒー','koohii','cà phê'],['テレビ','terebi','ti vi'],['バス','basu','xe buýt'],
+['パン','pan','bánh mì'],['カメラ','kamera','máy ảnh'],['タクシー','takushii','taxi'],
+['ホテル','hoteru','khách sạn'],['アイス','aisu','kem'],['ラジオ','rajio','đài radio'],
+['ネクタイ','nekutai','cà vạt'],['トマト','tomato','cà chua'],['レモン','remon','chanh vàng'],
+['ピアノ','piano','đàn piano'],['テスト','tesuto','bài kiểm tra'],['ノート','nooto','vở ghi']
+];
+
+const hiraganaRows={
+vowels:[['あ','a'],['い','i'],['う','u'],['え','e'],['お','o']],
+k:[['か','ka'],['き','ki'],['く','ku'],['け','ke'],['こ','ko']],
+s:[['さ','sa'],['し','shi'],['す','su'],['せ','se'],['そ','so']],
+t:[['た','ta'],['ち','chi'],['つ','tsu'],['て','te'],['と','to']],
+n:[['な','na'],['に','ni'],['ぬ','nu'],['ね','ne'],['の','no']],
+h:[['は','ha'],['ひ','hi'],['ふ','fu'],['へ','he'],['ほ','ho']],
+m:[['ま','ma'],['み','mi'],['む','mu'],['め','me'],['も','mo']],
+y:[['や','ya'],['ゆ','yu'],['よ','yo']],
+r:[['ら','ra'],['り','ri'],['る','ru'],['れ','re'],['ろ','ro']],
+w:[['わ','wa'],['を','wo'],['ん','n']]};
+const hiraganaWords=[
+['あお','ao','màu xanh'],
+['あか','aka','màu đỏ'],
+['いえ','ie','nhà'],
+['うえ','ue','phía trên'],
+['した','shita','phía dưới'],
+['ねこ','neko','con mèo'],
+['いぬ','inu','con chó'],
+['はな','hana','hoa'],
+['やま','yama','núi'],
+['かわ','kawa','sông'],
+['そら','sora','bầu trời'],
+['みず','mizu','nước'],
+['くるま','kuruma','ô tô'],
+['さかな','sakana','cá'],
+['たまご','tamago','trứng'],
+['おかね','okane','tiền'],
+['ここ','koko','ở đây'],
+['そこ','soko','ở đó'],
+['なつ','natsu','mùa hè'],
+['ふゆ','fuyu','mùa đông']
+];
+
+const $=id=>document.getElementById(id),shuffle=a=>[...a].sort(()=>Math.random()-.5);
+
+let activeScript='hira';
+let rows=hiraganaRows, words=hiraganaWords, all=Object.values(rows).flat();
+function setScript(kind){
+ activeScript=kind;
+ rows=kind==='kata'?katakanaRows:hiraganaRows;
+ words=kind==='kata'?katakanaWords:hiraganaWords;
+ all=Object.values(rows).flat();
+ const name=kind==='kata'?'Katakana':'Hiragana';
+ $('pageTitle').textContent='Luyện đọc bảng chữ cái '+name;
+ $('pageSubtitle').textContent='Nhận diện chữ, luyện đọc và học từ vựng đơn giản';
+ $('home').classList.add('hidden'); $('learning').classList.remove('hidden');
+ $('wordPrompt').textContent='Từ này đọc như thế nào?';
+ document.querySelector('#wordMode option[value="reading"]').textContent='Nhìn từ '+name+' → chọn cách đọc';
+ document.querySelector('#wordMode option[value="meaning"]').textContent='Nhìn từ '+name+' → chọn nghĩa tiếng Việt';
+ document.querySelector('#scope option[value="all"]').textContent='Tất cả '+name;
+ document.querySelector('#scope option[value="vowels"]').textContent='Hàng nguyên âm';
+ startQuiz(); newRead(); startWords();
+}
+document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>setScript(b.dataset.script)));
+$('homeButton').onclick=()=>{$('learning').classList.add('hidden');$('home').classList.remove('hidden');$('pageTitle').textContent='Học bảng chữ cái tiếng Nhật';$('pageSubtitle').textContent='Chọn bảng chữ cái bạn muốn học'};
+
+function sayJapanese(text){if(!('speechSynthesis'in window)){alert('Trình duyệt này chưa hỗ trợ đọc văn bản. Hãy thử Chrome hoặc Edge.');return}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';u.rate=.78;let vs=speechSynthesis.getVoices();let ja=vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith('ja'));if(ja)u.voice=ja;speechSynthesis.speak(u)}
+document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===btn));['quiz','read','words'].forEach(id=>$(id).classList.toggle('hidden',id!==btn.dataset.tab));if(btn.dataset.tab==='read')newRead();if(btn.dataset.tab==='words')startWords()});
+let q=[],qi=0,qs=0,qAnswered=false;
+function startQuiz(){let pool=$('scope').value==='all'?all:rows[$('scope').value];q=shuffle(pool).slice(0,10);qi=0;qs=0;$('quizResult').classList.add('hidden');$('quizQuestion').classList.remove('hidden');$('answers').classList.remove('hidden');$('next').classList.remove('hidden');renderQuiz()}
+function renderQuiz(){qAnswered=false;let item=q[qi],rev=$('mode').value==='romaji',correct=rev?item[0]:item[1];$('counter').textContent=`Câu ${qi+1}/${q.length}`;$('scoreText').textContent=`Đúng: ${qs}`;$('bar').style.width=`${qi/q.length*100}%`;$('quizPrompt').textContent=rev?'Chữ Romaji này viết bằng bảng chữ này thế nào?':'Chữ Nhật này đọc là gì?';$('quizQuestion').textContent=rev?item[1]:item[0];$('answers').innerHTML='';let opts=shuffle([correct,...shuffle(all.filter(x=>x!==item)).slice(0,3).map(x=>rev?x[0]:x[1])]);opts.forEach(v=>{let b=document.createElement('button');b.className='answer';b.textContent=v;b.onclick=()=>answerQuiz(b,v,correct);$('answers').appendChild(b)});$('quizFeedback').textContent='';$('next').disabled=true;$('next').textContent=qi===q.length-1?'Xem kết quả':'Câu tiếp theo'}
+function answerQuiz(btn,val,correct){if(qAnswered)return;qAnswered=true;[...$('answers').children].forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct')});if(val===correct){qs++;$('quizFeedback').textContent='Chính xác!';$('quizFeedback').style.color='#218447'}else{btn.classList.add('wrong');$('quizFeedback').textContent=`Chưa đúng. Đáp án đúng: ${correct}`;$('quizFeedback').style.color='#c9252b'}$('scoreText').textContent=`Đúng: ${qs}`;$('next').disabled=false}
+function nextQuiz(){if(!qAnswered)return;qi++;if(qi<q.length){renderQuiz();return}$('quizQuestion').classList.add('hidden');$('answers').classList.add('hidden');$('next').classList.add('hidden');$('quizResult').classList.remove('hidden');$('finalScore').textContent=`${qs}/${q.length}`;$('resultMessage').textContent=qs>=8?'Bạn làm rất tốt!': 'Hãy ôn lại những hàng chữ còn nhầm rồi thử lại nhé.'}
+$('scope').onchange=startQuiz;$('mode').onchange=startQuiz;$('next').onclick=nextQuiz;$('retry').onclick=startQuiz;
+let readItem=null;function newRead(){readItem=all[Math.floor(Math.random()*all.length)];$('readKana').textContent=readItem[0];$('readIndex').textContent='';$('readAnswer').textContent='';$('showReading').textContent='Hiện Romaji';$('showReading').dataset.shown='0'}
+$('newRead').onclick=newRead;$('speak').onclick=()=>sayJapanese(readItem[0]);$('showReading').onclick=()=>{let b=$('showReading');if(b.dataset.shown==='1')return;$('readAnswer').textContent=`Cách đọc: ${readItem[1]}`;b.dataset.shown='1';b.textContent='Đã hiện cách đọc'};let wq=[],wi=0,ws=0,wAnswered=false;
+function startWords(){wq=shuffle(words).slice(0,10);wi=0;ws=0;$('wordResult').classList.add('hidden');$('wordKana').classList.remove('hidden');$('wordAnswers').classList.remove('hidden');$('wordNext').classList.remove('hidden');renderWord()}
+function renderWord(){wAnswered=false;let item=wq[wi],mode=$('wordMode').value,correct=mode==='reading'?item[1]:item[2];$('wordCounter').textContent=`Từ ${wi+1}/${wq.length}`;$('wordScore').textContent=`Đúng: ${ws}`;$('wordBar').style.width=`${wi/wq.length*100}%`;$('wordPrompt').textContent=mode==='reading'?'Từ này đọc như thế nào?':'Từ này có nghĩa là gì?';$('wordKana').textContent=item[0];$('wordHint').textContent='';$('wordFeedback').textContent='';$('wordAnswers').innerHTML='';let pool=words.filter(x=>x!==item);let opts=shuffle([correct,...shuffle(pool).slice(0,3).map(x=>mode==='reading'?x[1]:x[2])]);opts.forEach(v=>{let b=document.createElement('button');b.className='answer';b.textContent=v;b.onclick=()=>answerWord(b,v,correct,item,mode);$('wordAnswers').appendChild(b)});$('wordNext').disabled=true;$('wordNext').textContent=wi===wq.length-1?'Xem kết quả':'Câu tiếp theo'}
+function answerWord(btn,val,correct,item,mode){if(wAnswered)return;wAnswered=true;[...$('wordAnswers').children].forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct')});if(val===correct){ws++;$('wordFeedback').textContent='Chính xác!';$('wordFeedback').style.color='#218447'}else{btn.classList.add('wrong');$('wordFeedback').textContent=`Đáp án đúng: ${correct}`;$('wordFeedback').style.color='#c9252b'}$('wordHint').textContent=`${item[1]} · ${item[2]}`;$('wordScore').textContent=`Đúng: ${ws}`;$('wordNext').disabled=false}
+function nextWord(){if(!wAnswered)return;wi++;if(wi<wq.length){renderWord();return}$('wordKana').classList.add('hidden');$('wordAnswers').classList.add('hidden');$('wordNext').classList.add('hidden');$('wordResult').classList.remove('hidden');$('wordFinal').textContent=`${ws}/${wq.length}`;$('wordMessage').textContent='Bạn có thể làm lại để luyện nhớ cách đọc và nghĩa của từ.'}
+$('wordNext').onclick=nextWord;$('wordRetry').onclick=startWords;$('wordMode').onchange=startWords;
+</script></body></html>
